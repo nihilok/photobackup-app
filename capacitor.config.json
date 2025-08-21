@@ -1,0 +1,34 @@
+{
+  "appId": "com.photobackup.app",
+  "appName": "Photo Backup",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    },
+    "Filesystem": {
+      "androidRequestPermissions": true
+    },
+    "Camera": {
+      "permissions": [
+        "camera",
+        "photos"
+      ]
+    }
+  },
+  "android": {
+    "permissions": [
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
+      "android.permission.CAMERA",
+      "android.permission.INTERNET",
+      "android.permission.ACCESS_NETWORK_STATE"
+    ]
+  },
+  "ios": {
+    "permissions": [
+      "NSCameraUsageDescription",
+      "NSPhotoLibraryUsageDescription"
+    ]
+  }
+}

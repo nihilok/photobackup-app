@@ -1,0 +1,42 @@
+{
+  "name": "photobackup-app",
+  "version": "1.0.0",
+  "description": "Nextcloud Photo Sync Client",
+  "type": "module",
+  "keywords": [
+    "capacitor",
+    "mobile",
+    "nextcloud",
+    "photo",
+    "backup",
+    "sync",
+    "react",
+    "vite"
+  ],
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/camera": "^7.0.2",
+    "@capacitor/core": "latest",
+    "@capacitor/device": "^7.0.2",
+    "@capacitor/filesystem": "^7.1.4",
+    "@capacitor/preferences": "^7.0.2",
+    "@capacitor/splash-screen": "latest",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "latest",
+    "vite": "^5.4.2"
+  },
+  "author": "",
+  "license": "ISC"
+}
