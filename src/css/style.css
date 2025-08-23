@@ -3,19 +3,35 @@
   /* Colors - Light Theme */
   --color-primary: #667eea;
   --color-primary-dark: #764ba2;
-  --color-primary-gradient: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+  --color-primary-gradient: linear-gradient(
+    45deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
 
-  --color-success: #4CAF50;
+  --color-success: #4caf50;
   --color-success-dark: #45a049;
-  --color-success-gradient: linear-gradient(45deg, var(--color-success), var(--color-success-dark));
+  --color-success-gradient: linear-gradient(
+    45deg,
+    var(--color-success),
+    var(--color-success-dark)
+  );
 
-  --color-info: #2196F3;
-  --color-info-dark: #1976D2;
-  --color-info-gradient: linear-gradient(45deg, var(--color-info), var(--color-info-dark));
+  --color-info: #2196f3;
+  --color-info-dark: #1976d2;
+  --color-info-gradient: linear-gradient(
+    45deg,
+    var(--color-info),
+    var(--color-info-dark)
+  );
 
-  --color-warning: #FF6B6B;
-  --color-warning-dark: #EE5A24;
-  --color-warning-gradient: linear-gradient(45deg, var(--color-warning), var(--color-warning-dark));
+  --color-warning: #ff6b6b;
+  --color-warning-dark: #ee5a24;
+  --color-warning-gradient: linear-gradient(
+    45deg,
+    var(--color-warning),
+    var(--color-warning-dark)
+  );
 
   /* Background Colors */
   --color-bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -120,15 +136,20 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
   background: var(--color-bg-primary);
   min-height: 100vh;
   color: var(--color-text-primary);
+}
+
+html {
+  scroll-behavior: smooth;
   /* Prevent content from going behind status bar */
   padding-top: var(--status-bar-height);
 }
@@ -136,13 +157,13 @@ body {
 .app {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-4xl) var(--spacing-lg) var(--spacing-lg);
+  padding: 0;
   min-height: calc(100vh - var(--status-bar-height));
 }
 
 header {
   text-align: center;
-  margin: var(--spacing-2xl) 0;
+  margin: 0 0 var(--spacing-lg);
   background: var(--color-bg-surface);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
@@ -195,6 +216,16 @@ header p {
   margin-bottom: var(--spacing-xs);
   font-weight: 600;
   color: var(--color-text-tertiary);
+}
+
+button .material-symbols-outlined,
+input[type="submit"] .material-symbols-outlined {
+  margin-bottom: 2px;
+}
+
+.save-btn .material-symbols-outlined,
+.permission-btn .material-symbols-outlined {
+  margin-bottom: 4px;
 }
 
 .form-group input,
@@ -737,9 +768,15 @@ button:disabled {
 }
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .test-result {

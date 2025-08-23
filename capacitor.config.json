@@ -23,7 +23,9 @@
       "android.permission.CAMERA",
       "android.permission.INTERNET",
       "android.permission.ACCESS_NETWORK_STATE"
-    ]
+    ],
+    "webContentsDebuggingEnabled": true,
+    "loggingBehavior": "debug"
   },
   "ios": {
     "permissions": [

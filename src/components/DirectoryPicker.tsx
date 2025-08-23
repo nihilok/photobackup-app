@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import React, { useState, useEffect } from "react";
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import { MaterialSymbol } from "./MaterialSymbol";
 
 interface DirectoryPickerProps {
   selectedPaths: string[];
@@ -17,38 +18,42 @@ interface FileSystemItem {
 const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
   selectedPaths,
   onPathsChange,
-  title
+  title,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentPath, setCurrentPath] = useState('/');
+  const [currentPath, setCurrentPath] = useState("/");
   const [items, setItems] = useState<FileSystemItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   // Common photo directories to show as quick options
   const commonDirectories = [
-    '/DCIM/Camera',
-    '/DCIM',
-    '/Pictures',
-    '/Download',
-    '/Screenshots',
-    '/Photos'
+    "/DCIM/Camera",
+    "/DCIM",
+    "/Pictures",
+    "/Download",
+    "/Screenshots",
+    "/Photos",
   ];
 
   const loadDirectory = async (path: string) => {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Try different directory contexts
-      const directories = [Directory.ExternalStorage, Directory.Documents, Directory.Data];
+      const directories = [
+        Directory.ExternalStorage,
+        Directory.Documents,
+        Directory.Data,
+      ];
       let result = null;
 
       for (const dir of directories) {
         try {
           result = await Filesystem.readdir({
-            path: path === '/' ? '' : path,
-            directory: dir
+            path: path === "/" ? "" : path,
+            directory: dir,
           });
           break;
         } catch (err) {
@@ -57,7 +62,7 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
       }
 
       if (!result) {
-        setError('Directory not accessible');
+        setError("Directory not accessible");
         setItems([]);
         setLoading(false);
         return;
@@ -66,18 +71,19 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
       const fileSystemItems: FileSystemItem[] = [];
 
       // Add parent directory option if not at root
-      if (path !== '/') {
-        const parentPath = path.split('/').slice(0, -1).join('/') || '/';
+      if (path !== "/") {
+        const parentPath = path.split("/").slice(0, -1).join("/") || "/";
         fileSystemItems.push({
-          name: '.. (Parent Directory)',
+          name: ".. (Parent Directory)",
           path: parentPath,
-          isDirectory: true
+          isDirectory: true,
         });
       }
 
       // Process files and directories
       for (const file of result.files) {
-        const itemPath = path === '/' ? `/${file.name}` : `${path}/${file.name}`;
+        const itemPath =
+          path === "/" ? `/${file.name}` : `${path}/${file.name}`;
 
         // Check if it's a directory by trying to read it
         let isDirectory = false;
@@ -86,17 +92,19 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
         try {
           const subResult = await Filesystem.readdir({
             path: itemPath.substring(1), // Remove leading slash
-            directory: Directory.ExternalStorage
+            directory: Directory.ExternalStorage,
           });
           isDirectory = true;
 
           // Check if directory contains photos
-          hasPhotos = subResult.files.some(subFile =>
-            subFile.name.toLowerCase().match(/\.(jpg|jpeg|png|gif|heic|webp)$/)
+          hasPhotos = subResult.files.some((subFile) =>
+            subFile.name.toLowerCase().match(/\.(jpg|jpeg|png|gif|heic|webp)$/),
           );
         } catch {
           // It's a file or inaccessible directory
-          isDirectory = file.name.toLowerCase().match(/\.(jpg|jpeg|png|gif|heic|webp)$/) === null;
+          isDirectory =
+            file.name.toLowerCase().match(/\.(jpg|jpeg|png|gif|heic|webp)$/) ===
+            null;
         }
 
         if (isDirectory) {
@@ -104,7 +112,7 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
             name: file.name,
             path: itemPath,
             isDirectory: true,
-            hasPhotos
+            hasPhotos,
           });
         }
       }
@@ -112,7 +120,7 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
       setItems(fileSystemItems);
       setCurrentPath(path);
     } catch (err) {
-      console.error('Error loading directory:', err);
+      console.error("Error loading directory:", err);
       setError(`Failed to load directory: ${path}`);
       setItems([]);
     } finally {
@@ -122,7 +130,7 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      loadDirectory('/');
+      loadDirectory("/");
     }
   }, [isOpen]);
 
@@ -139,7 +147,7 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
   };
 
   const handleRemovePath = (path: string) => {
-    onPathsChange(selectedPaths.filter(p => p !== path));
+    onPathsChange(selectedPaths.filter((p) => p !== path));
   };
 
   const handleQuickAdd = (path: string) => {
@@ -155,7 +163,8 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           className="directory-picker-toggle"
         >
-          📁 {isOpen ? 'Close Browser' : 'Browse Directories'}
+          <MaterialSymbol icon="folder" size={18} />{" "}
+          {isOpen ? "Close Browser" : "Browse Directories"}
         </button>
       </div>
 
@@ -164,15 +173,17 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
         {selectedPaths.length === 0 ? (
           <div className="no-paths">No directories selected</div>
         ) : (
-          selectedPaths.map(path => (
+          selectedPaths.map((path) => (
             <div key={path} className="selected-path">
-              <span className="path-text">📂 {path}</span>
+              <span className="path-text">
+                <MaterialSymbol icon="folder_open" size={16} /> {path}
+              </span>
               <button
                 type="button"
                 onClick={() => handleRemovePath(path)}
                 className="remove-path-btn"
               >
-                ❌
+                <MaterialSymbol icon="close" size={16} />
               </button>
             </div>
           ))
@@ -181,17 +192,24 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
 
       {/* Quick add common directories */}
       <div className="quick-directories">
-        <div className="quick-directories-title">Quick Add Common Directories:</div>
+        <div className="quick-directories-title">
+          Quick Add Common Directories:
+        </div>
         <div className="quick-directories-grid">
-          {commonDirectories.map(path => (
+          {commonDirectories.map((path) => (
             <button
               key={path}
               type="button"
               onClick={() => handleQuickAdd(path)}
-              className={`quick-dir-btn ${selectedPaths.includes(path) ? 'selected' : ''}`}
+              className={`quick-dir-btn ${selectedPaths.includes(path) ? "selected" : ""}`}
               disabled={selectedPaths.includes(path)}
             >
-              {selectedPaths.includes(path) ? '✅' : '📁'} {path}
+              <MaterialSymbol
+                icon={selectedPaths.includes(path) ? "check_circle" : "folder"}
+                size={16}
+                color={selectedPaths.includes(path) ? "green" : undefined}
+              />{" "}
+              {path}
             </button>
           ))}
         </div>
@@ -202,7 +220,8 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
         <div className="directory-browser">
           <div className="browser-header">
             <div className="current-path">
-              📍 Current: {currentPath}
+              <MaterialSymbol icon="location_on" size={16} /> Current:{" "}
+              {currentPath}
             </div>
             <button
               type="button"
@@ -210,7 +229,16 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
               className="add-current-btn"
               disabled={selectedPaths.includes(currentPath)}
             >
-              {selectedPaths.includes(currentPath) ? '✅ Added' : '➕ Add Current Directory'}
+              {selectedPaths.includes(currentPath) ? (
+                <>
+                  <MaterialSymbol icon="check_circle" size={16} color="green" />{" "}
+                  Added
+                </>
+              ) : (
+                <>
+                  <MaterialSymbol icon="add" size={16} /> Add Current Directory
+                </>
+              )}
             </button>
           </div>
 
@@ -218,22 +246,31 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
           {error && <div className="error">{error}</div>}
 
           <div className="directory-list">
-            {items.map(item => (
+            {items.map((item) => (
               <div
                 key={item.path}
-                className={`directory-item ${item.hasPhotos ? 'has-photos' : ''}`}
+                className={`directory-item ${item.hasPhotos ? "has-photos" : ""}`}
                 onClick={() => handleDirectoryClick(item)}
               >
                 <div className="item-icon">
-                  {item.name.startsWith('..') ? '🔙' : '📁'}
-                  {item.hasPhotos && <span className="photo-indicator">📸</span>}
+                  <MaterialSymbol
+                    icon={item.name.startsWith("..") ? "arrow_back" : "folder"}
+                    size={20}
+                  />
+                  {item.hasPhotos && (
+                    <span className="photo-indicator">
+                      <MaterialSymbol icon="photo_camera" size={14} />
+                    </span>
+                  )}
                 </div>
                 <div className="item-details">
                   <div className="item-name">{item.name}</div>
-                  {item.hasPhotos && <div className="item-hint">Contains photos</div>}
+                  {item.hasPhotos && (
+                    <div className="item-hint">Contains photos</div>
+                  )}
                 </div>
                 <div className="item-actions">
-                  {!item.name.startsWith('..') && (
+                  {!item.name.startsWith("..") && (
                     <button
                       type="button"
                       onClick={(e) => {
@@ -243,7 +280,19 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
                       className="add-item-btn"
                       disabled={selectedPaths.includes(item.path)}
                     >
-                      {selectedPaths.includes(item.path) ? '✅' : '➕'}
+                      <MaterialSymbol
+                        icon={
+                          selectedPaths.includes(item.path)
+                            ? "check_circle"
+                            : "add"
+                        }
+                        size={16}
+                        color={
+                          selectedPaths.includes(item.path)
+                            ? "green"
+                            : undefined
+                        }
+                      />
                     </button>
                   )}
                 </div>
@@ -257,8 +306,12 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
       <details className="manual-entry">
         <summary>Manual Path Entry</summary>
         <textarea
-          value={selectedPaths.join('\n')}
-          onChange={(e) => onPathsChange(e.target.value.split('\n').filter(dir => dir.trim()))}
+          value={selectedPaths.join("\n")}
+          onChange={(e) =>
+            onPathsChange(
+              e.target.value.split("\n").filter((dir) => dir.trim()),
+            )
+          }
           rows={3}
           placeholder="/DCIM/Camera&#10;/Pictures&#10;/Download"
           className="manual-paths-textarea"

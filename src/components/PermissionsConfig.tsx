@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import { MaterialSymbol } from "./MaterialSymbol";
 
 interface PermissionsConfigProps {
   permissionsGranted: boolean;
@@ -9,7 +10,7 @@ interface PermissionsConfigProps {
 const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
   permissionsGranted,
   requestStoragePermissions,
-  checkStoragePermissions
+  checkStoragePermissions,
 }) => {
   const handleRequestPermissions = async () => {
     const granted = await requestStoragePermissions();
@@ -20,18 +21,27 @@ const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
 
   return (
     <section className="config-section">
-      <h2>🔐 Storage Permissions</h2>
+      <h2>
+        <MaterialSymbol icon="lock" size={24} /> Storage Permissions
+      </h2>
       <div className="permission-status">
         <p>
           {permissionsGranted ? (
-            <span className="permission-granted">✅ Storage permissions granted</span>
+            <span className="permission-granted">
+              <MaterialSymbol icon="check_circle" size={18} color="green" />{" "}
+              Storage permissions granted
+            </span>
           ) : (
-            <span className="permission-denied">❌ Storage permissions required</span>
+            <span className="permission-denied">
+              <MaterialSymbol icon="cancel" size={18} color="red" /> Storage
+              permissions required
+            </span>
           )}
         </p>
         {!permissionsGranted && (
           <p className="permission-hint">
-            The app needs access to your device storage to scan for photos and perform backups.
+            The app needs access to your device storage to scan for photos and
+            perform backups.
           </p>
         )}
       </div>
@@ -41,13 +51,13 @@ const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
           className="permission-btn"
           disabled={permissionsGranted}
         >
-          🔓 {permissionsGranted ? 'Permissions Granted' : 'Request Storage Access'}
+          <MaterialSymbol icon="lock_open" size={18} />{" "}
+          {permissionsGranted
+            ? "Permissions Granted"
+            : "Request Storage Access"}
         </button>
-        <button
-          onClick={checkStoragePermissions}
-          className="refresh-btn"
-        >
-          🔄 Check Permissions
+        <button onClick={checkStoragePermissions} className="refresh-btn">
+          <MaterialSymbol icon="refresh" size={18} /> Check Permissions
         </button>
       </div>
     </section>

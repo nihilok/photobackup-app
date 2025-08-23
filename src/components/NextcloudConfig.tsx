@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NextcloudCredentials } from "../types";
 import { CapacitorHttp } from "@capacitor/core";
+import { MaterialSymbol } from "./MaterialSymbol";
 
 interface NextcloudConfigProps {
   credentials: NextcloudCredentials | null;
@@ -146,7 +147,9 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
 
   return (
     <section className="config-section">
-      <h2>🔧 Nextcloud Configuration</h2>
+      <h2>
+        <MaterialSymbol icon="settings" size={24} /> Nextcloud Configuration
+      </h2>
 
       <div className="form-group">
         <label>Server URL:</label>
@@ -206,7 +209,15 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
           disabled={!isFormValid || isTesting}
           className={`test-btn ${isTesting ? "testing" : ""}`}
         >
-          {isTesting ? "🔄 Testing Connection..." : "🧪 Test Configuration"}
+          {isTesting ? (
+            <>
+              <MaterialSymbol icon="sync" size={18} /> Testing Connection...
+            </>
+          ) : (
+            <>
+              <MaterialSymbol icon="science" size={18} /> Test Configuration
+            </>
+          )}
         </button>
 
         {testResult && (
@@ -214,7 +225,12 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
             className={`test-result ${testResult.success ? "success" : "error"}`}
           >
             <div className="test-message">
-              {testResult.success ? "✅" : "❌"} {testResult.message}
+              <MaterialSymbol
+                icon={testResult.success ? "check_circle" : "error"}
+                size={18}
+                color={testResult.success ? "green" : "red"}
+              />{" "}
+              {testResult.message}
             </div>
 
             {testResult.details && (
@@ -222,19 +238,42 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
                 <div
                   className={`test-step ${testResult.details.serverReachable ? "success" : "error"}`}
                 >
-                  {testResult.details.serverReachable ? "✅" : "❌"} Server
-                  Reachable
+                  <MaterialSymbol
+                    icon={
+                      testResult.details.serverReachable
+                        ? "check_circle"
+                        : "cancel"
+                    }
+                    size={16}
+                    color={testResult.details.serverReachable ? "green" : "red"}
+                  />{" "}
+                  Server Reachable
                 </div>
                 <div
                   className={`test-step ${testResult.details.authValid ? "success" : "error"}`}
                 >
-                  {testResult.details.authValid ? "✅" : "❌"} Authentication
-                  Valid
+                  <MaterialSymbol
+                    icon={
+                      testResult.details.authValid ? "check_circle" : "cancel"
+                    }
+                    size={16}
+                    color={testResult.details.authValid ? "green" : "red"}
+                  />{" "}
+                  Authentication Valid
                 </div>
                 <div
                   className={`test-step ${testResult.details.webdavAccess ? "success" : "error"}`}
                 >
-                  {testResult.details.webdavAccess ? "✅" : "❌"} WebDAV Access
+                  <MaterialSymbol
+                    icon={
+                      testResult.details.webdavAccess
+                        ? "check_circle"
+                        : "cancel"
+                    }
+                    size={16}
+                    color={testResult.details.webdavAccess ? "green" : "red"}
+                  />{" "}
+                  WebDAV Access
                 </div>
               </div>
             )}
@@ -247,9 +286,10 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
         disabled={!isFormValid}
         className={`save-btn ${testResult?.success ? "verified" : ""}`}
       >
+        <MaterialSymbol icon="save" size={18} />{" "}
         {testResult?.success
-          ? "💾 Save Verified Configuration"
-          : "💾 Save Credentials"}
+          ? "Save Verified Configuration"
+          : "Save Credentials"}
       </button>
     </section>
   );
