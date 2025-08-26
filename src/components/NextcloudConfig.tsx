@@ -21,7 +21,7 @@ interface TestResult {
   };
 }
 
-const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
+export const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
   credentials,
   setCredentials,
   saveCredentials,
@@ -294,5 +294,3 @@ const NextcloudConfig: React.FC<NextcloudConfigProps> = ({
     </section>
   );
 };
-
-export default NextcloudConfig;

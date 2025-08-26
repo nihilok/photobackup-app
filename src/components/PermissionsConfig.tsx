@@ -7,7 +7,7 @@ interface PermissionsConfigProps {
   checkStoragePermissions: () => Promise<boolean>;
 }
 
-const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
+export const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
   permissionsGranted,
   requestStoragePermissions,
   checkStoragePermissions,
@@ -63,5 +63,3 @@ const PermissionsConfig: React.FC<PermissionsConfigProps> = ({
     </section>
   );
 };
-
-export default PermissionsConfig;

@@ -1,7 +1,8 @@
 import React from "react";
-import DirectoryPicker from "./components/DirectoryPicker";
-import NextcloudConfig from "./components/NextcloudConfig";
-import PermissionsConfig from "./components/PermissionsConfig";
+import { DirectoryPicker } from "./components/DirectoryPicker";
+import { NextcloudConfig } from "./components/NextcloudConfig";
+import { PermissionsConfig } from "./components/PermissionsConfig";
+import { BackupActions } from "./components/BackupActions";
 import { DebugInfo } from "./components/DebugInfo";
 import { MaterialSymbol } from "./components/MaterialSymbol";
 import { useCredentials } from "./hooks/useCredentials";
@@ -33,6 +34,7 @@ const App: React.FC = () => {
   const { isBackingUp, performBackup, uploadDebugInfo } = useNextcloudBackup(
     credentials,
     backupConfig,
+    devicePhotos, // Pass the photos found by MediaStore
   );
 
   // Initialize app on startup (removed loadDevicePhotos to prevent duplicate scanning)
@@ -127,34 +129,14 @@ const App: React.FC = () => {
           </section>
 
           {/* Backup Actions */}
-          <section className="backup-section">
-            <h2>
-              <MaterialSymbol icon="cloud_upload" size={24} /> Backup Actions
-            </h2>
-            <button
-              onClick={handleBackup}
-              disabled={isBackingUp || !credentials || isScanning}
-              className="backup-btn"
-            >
-              {isBackingUp ? (
-                <>
-                  <MaterialSymbol icon="hourglass_empty" size={18} /> Backing
-                  up...
-                </>
-              ) : (
-                <>
-                  <MaterialSymbol icon="rocket_launch" size={18} /> Start Backup
-                </>
-              )}
-            </button>
-
-            {backupStatus && (
-              <div className="status-message">{backupStatus}</div>
-            )}
-
-            {/* Upload Debug Info Component */}
-            <DebugInfo debugInfo={uploadDebugInfo} isVisible={isBackingUp} />
-          </section>
+          <BackupActions
+            credentials={credentials}
+            isBackingUp={isBackingUp}
+            isScanning={isScanning}
+            backupStatus={backupStatus}
+            uploadDebugInfo={uploadDebugInfo}
+            onBackup={handleBackup}
+          />
         </main>
       </div>
     </>

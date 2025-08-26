@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface DebugInfoProps {
   debugInfo: string[];
@@ -11,7 +11,13 @@ export const DebugInfo: React.FC<DebugInfoProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(isVisible);
 
-  if (!debugInfo.length) return null;
+  useEffect(() => {
+    setExpanded(isVisible);
+  }, [isVisible]);
+
+  if (!isVisible && debugInfo.length === 0) return null;
+
+  const entryCount = debugInfo.length;
 
   return (
     <div
@@ -35,7 +41,8 @@ export const DebugInfo: React.FC<DebugInfoProps> = ({
           fontWeight: "bold",
         }}
       >
-        Debug Info ({debugInfo.length} entries) {expanded ? "▼" : "▶"}
+        Debug Info ({entryCount} {entryCount === 1 ? "entry" : "entries"}){" "}
+        {expanded ? "▼" : "▶"}
       </button>
 
       {expanded && (
@@ -45,16 +52,21 @@ export const DebugInfo: React.FC<DebugInfoProps> = ({
             overflowY: "auto",
             padding: "10px",
             backgroundColor: "#000",
+            color: "#e8e8e8",
             fontFamily: "monospace",
             fontSize: "12px",
             lineHeight: "1.4",
           }}
         >
-          {debugInfo.map((info, index) => (
-            <div key={index} style={{ marginBottom: "2px" }}>
-              {info}
-            </div>
-          ))}
+          {entryCount === 0 ? (
+            <div style={{ opacity: 0.8 }}>Waiting for logs…</div>
+          ) : (
+            debugInfo.map((info, index) => (
+              <div key={index} style={{ marginBottom: "2px" }}>
+                {info}
+              </div>
+            ))
+          )}
         </div>
       )}
     </div>

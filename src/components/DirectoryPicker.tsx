@@ -15,7 +15,7 @@ interface FileSystemItem {
   hasPhotos?: boolean;
 }
 
-const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
+export const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
   selectedPaths,
   onPathsChange,
   title,
@@ -320,5 +320,3 @@ const DirectoryPicker: React.FC<DirectoryPickerProps> = ({
     </div>
   );
 };
-
-export default DirectoryPicker;
